@@ -1,7 +1,7 @@
 angular.module('fileUploadApp', ['ngFileUpload'])
-	.constant('articlesUrl', 'http://localhost:3000/articles')
+	.constant('articlesUrl', 'http://localhost:3000/articles/')
 	.controller('uploadCtrl', function ($scope, Upload, $timeout, articlesUrl) {
-		$scope.uploadPic = function(file) {
+		$scope.uploadPhoto = function(file) {
 			file.upload = Upload.upload({
 				url: articlesUrl,
 				data: {
@@ -9,7 +9,7 @@ angular.module('fileUploadApp', ['ngFileUpload'])
 					content: $scope.content,
 					photo: file
 				}
-			});
+			}); // FormData(HTML5 API) 객체에 대한 Promise 객체 생성
 
 			file.upload.then(function (response) {
 				$timeout(function () {
@@ -21,5 +21,16 @@ angular.module('fileUploadApp', ['ngFileUpload'])
 			}, function (evt) {
 				file.progress = parseInt(100.0 * evt.loaded / evt.total);
 			});
+
+		}
+
+		$scope.deletePhoto = function(prop) {
+			$scope[prop] = null;
+		};
+
+		$scope.reset = function() {
+			$scope.title = "";
+			$scope.content = "";
+			$scope.photoFile = null;
 		}
 	});
